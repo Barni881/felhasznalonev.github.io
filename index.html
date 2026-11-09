@@ -2,60 +2,742 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f2eb">
-  <title>My Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievement Inventory | Funky Interactive Portfolio</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome for Funky Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Bungee & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            funkyNeon: '#ccff00',
+            funkyPink: '#ff2a85',
+            funkyPurple: '#7b2cbf',
+            funkyCyan: '#00f5d4',
+            funkyYellow: '#ffee32',
+            funkyDark: '#121216',
+            funkyCard: '#1d1d24'
+          },
+          fontFamily: {
+            bungee: ['Bungee', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'brutal': '6px 6px 0px 0px #000',
+            'brutal-pink': '6px 6px 0px 0px #ff2a85',
+            'brutal-neon': '6px 6px 0px 0px #ccff00',
+            'brutal-cyan': '6px 6px 0px 0px #00f5d4',
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    :root {
-      color-scheme: light;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #20231f;
-      background: #f5f2eb;
-    }
-    * { box-sizing: border-box; }
     body {
-      min-height: 100vh;
-      margin: 0;
-      display: grid;
-      place-items: center;
-      padding: 2rem;
+      background-color: #121216;
+      background-image: 
+        radial-gradient(#262633 1px, transparent 1px),
+        radial-gradient(#262633 1px, #121216 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
     }
-    main {
-      width: min(100%, 720px);
-      padding: clamp(2rem, 8vw, 5rem);
-      border: 1px solid #dcd8ce;
-      border-radius: 1.5rem;
-      background: #fffefa;
-      box-shadow: 0 1.5rem 4rem rgb(44 43 35 / 8%);
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
     }
-    .eyebrow {
-      margin: 0 0 1rem;
-      color: #687258;
-      font-size: .8rem;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
+    ::-webkit-scrollbar-track {
+      background: #121216;
     }
-    h1 {
-      margin: 0;
-      font-size: clamp(2.75rem, 9vw, 5rem);
-      letter-spacing: -.06em;
-      line-height: 1;
+    ::-webkit-scrollbar-thumb {
+      background: #ff2a85;
+      border-radius: 5px;
     }
-    .intro {
-      max-width: 34rem;
-      margin: 1.5rem 0 0;
-      color: #55584f;
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
-      line-height: 1.7;
+
+    /* Wobbly hover animation */
+    .hover-wobble:hover {
+      animation: wobble 0.4s ease-in-out infinite alternate;
+    }
+    @keyframes wobble {
+      0% { transform: rotate(-2deg) scale(1.02); }
+      100% { transform: rotate(2deg) scale(1.02); }
+    }
+
+    /* Confetti floating badge */
+    .floating-badge {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    canvas {
+      touch-action: none;
     }
   </style>
 </head>
-<body>
-  <main>
-    <p class="eyebrow">A little about my work</p>
-    <h1>My Portfolio</h1>
-    <p class="intro">Welcome to my portfolio, where I share my projects, creativity, and things I have learned.</p>
-  </main>
+<body class="font-sans antialiased text-gray-100 min-h-screen flex flex-col justify-between selection:bg-funkyPink selection:text-white">
+
+  <!-- TOP HEADER / NAVBAR -->
+  <header class="sticky top-0 z-50 bg-funkyDark/90 backdrop-blur-md border-b-4 border-black px-4 py-4">
+    <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 bg-funkyNeon text-black rounded-xl border-2 border-black flex items-center justify-center font-bungee text-2xl shadow-brutal rotate-[-4deg]">
+          ⚡
+        </div>
+        <div>
+          <h1 class="font-bungee text-xl md:text-2xl tracking-wide text-white">
+            PRO <span class="text-funkyNeon">ATHLETE</span> & <span class="text-funkyPink">CREATOR</span>
+          </h1>
+          <p class="text-xs text-gray-400 font-semibold tracking-widest uppercase">The Multi-Talented Inventory</p>
+        </div>
+      </div>
+
+      <!-- Quick Stats Pill -->
+      <div class="flex items-center gap-2 bg-funkyCard border-2 border-black rounded-full px-4 py-2 shadow-brutal text-xs md:text-sm">
+        <span class="flex items-center text-funkyNeon"><i class="fa-solid fa-trophy mr-1.5"></i> 2 Pro Sports</span>
+        <span class="text-gray-600">|</span>
+        <span class="flex items-center text-funkyPink"><i class="fa-solid fa-video mr-1.5"></i> Video Editor</span>
+        <span class="text-gray-600">|</span>
+        <span class="flex items-center text-funkyCyan"><i class="fa-solid fa-paw mr-1.5"></i> Pet Whisperer</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="max-w-6xl mx-auto px-4 pt-12 pb-8 w-full">
+    <div class="relative bg-gradient-to-r from-funkyPurple via-purple-900 to-funkyDark border-4 border-black rounded-3xl p-6 md:p-12 shadow-brutal-neon overflow-hidden">
+      <!-- Background Graphic Elements -->
+      <div class="absolute -right-10 -bottom-10 text-9xl opacity-10 select-none pointer-events-none font-bungee">
+        🎾 🎮 🎬
+      </div>
+      
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-block bg-funkyYellow text-black font-bungee text-xs px-3 py-1 rounded-full border-2 border-black mb-4 uppercase tracking-wider transform -rotate-1 shadow-brutal">
+          🚀 Unlocked Achievements: 12+
+        </div>
+        
+        <h2 class="font-bungee text-3xl md:text-6xl text-white leading-tight mb-6">
+          SERVING ACES & <br>
+          <span class="text-funkyNeon underline decoration-funkyPink">CREATING CONTENT</span>
+        </h2>
+        
+        <p class="text-lg md:text-xl text-gray-200 leading-relaxed mb-8 font-medium">
+          Welcome to my dynamic achievement zone! From dominating professional <strong class="text-funkyNeon">Tennis & Padel</strong> courts to coaching young talents, editing sharp <strong class="text-funkyPink">TikToks & YouTube</strong> videos, building <strong class="text-funkyCyan">Roblox maps</strong>, 3D modelling in <strong class="text-funkyYellow">Blender</strong>, and mastering animal psychology.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap gap-4">
+          <button onclick="scrollToSection('inventory')" class="bg-funkyNeon text-black font-bungee px-6 py-3 rounded-xl border-2 border-black shadow-brutal hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2">
+            <i class="fa-solid fa-layer-group"></i> Explore Skills
+          </button>
+          <button onclick="scrollToSection('games')" class="bg-funkyPink text-white font-bungee px-6 py-3 rounded-xl border-2 border-black shadow-brutal hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2">
+            <i class="fa-solid fa-table-tennis-paddle-ball"></i> Play Mini-Games
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK STATS DASHBOARD -->
+  <section class="max-w-6xl mx-auto px-4 py-6 w-full">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-funkyCard border-2 border-black p-4 rounded-2xl shadow-brutal text-center">
+        <div class="text-3xl md:text-4xl font-bungee text-funkyNeon mb-1">PRO</div>
+        <div class="text-xs uppercase font-bold text-gray-400">Tennis & Padel</div>
+      </div>
+      <div class="bg-funkyCard border-2 border-black p-4 rounded-2xl shadow-brutal text-center">
+        <div class="text-3xl md:text-4xl font-bungee text-funkyPink mb-1">100+</div>
+        <div class="text-xs uppercase font-bold text-gray-400">Videos Edited</div>
+      </div>
+      <div class="bg-funkyCard border-2 border-black p-4 rounded-2xl shadow-brutal text-center">
+        <div class="text-3xl md:text-4xl font-bungee text-funkyCyan mb-1">3 Pets</div>
+        <div class="text-xs uppercase font-bold text-gray-400">Cat & Dogs Trained</div>
+      </div>
+      <div class="bg-funkyCard border-2 border-black p-4 rounded-2xl shadow-brutal text-center">
+        <div class="text-3xl md:text-4xl font-bungee text-funkyYellow mb-1">3D / DEV</div>
+        <div class="text-xs uppercase font-bold text-gray-400">Roblox & Blender</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENT INVENTORY (FILTERABLE GRID) -->
+  <section id="inventory" class="max-w-6xl mx-auto px-4 py-10 w-full">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+      <div>
+        <h3 class="font-bungee text-3xl md:text-4xl text-white">
+          SKILL <span class="text-funkyPink">INVENTORY</span>
+        </h3>
+        <p class="text-gray-400 text-sm mt-1">Filter through my practical skills, sports achievements, and creative projects.</p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="flex flex-wrap gap-2" id="filter-container">
+        <button onclick="filterCards(event, 'all')" class="filter-btn active bg-funkyNeon text-black font-bungee text-xs px-4 py-2 rounded-xl border-2 border-black shadow-brutal transition-all">
+          ALL
+        </button>
+        <button onclick="filterCards(event, 'sports')" class="filter-btn bg-funkyCard text-white font-bungee text-xs px-4 py-2 rounded-xl border-2 border-black shadow-brutal transition-all hover:bg-gray-800">
+          🏆 SPORTS & COACHING
+        </button>
+        <button onclick="filterCards(event, 'digital')" class="filter-btn bg-funkyCard text-white font-bungee text-xs px-4 py-2 rounded-xl border-2 border-black shadow-brutal transition-all hover:bg-gray-800">
+          🎬 CREATIVE & EDITING
+        </button>
+        <button onclick="filterCards(event, 'life')" class="filter-btn bg-funkyCard text-white font-bungee text-xs px-4 py-2 rounded-xl border-2 border-black shadow-brutal transition-all hover:bg-gray-800">
+          🐾 ANIMALS & LIFE
+        </button>
+      </div>
+    </div>
+
+    <!-- CARDS GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="card-grid">
+
+      <!-- CARD 1: Pro Tennis -->
+      <div class="card-item sports bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-neon hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🎾</span>
+            <span class="bg-funkyNeon text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">PRO ATHLETE</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Professional Tennis Player</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            High-level competitive match experience, court strategy, intense physical conditioning, and mental stamina under pressure.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyNeon font-mono">
+          <span>STAT: 100% Match Ready</span>
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+      </div>
+
+      <!-- CARD 2: Pro Padel -->
+      <div class="card-item sports bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-pink hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🏓</span>
+            <span class="bg-funkyPink text-white text-xs font-bungee px-2.5 py-1 rounded-md border border-black">PRO ATHLETE</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Professional Padel Player</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Mastered glass-wall positioning, fast-reaction volleying, tactical doubles teamwork, and quick decision making.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyPink font-mono">
+          <span>SKILL: Wall Play Master</span>
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+      </div>
+
+      <!-- CARD 3: Summer Tennis Coach -->
+      <div class="card-item sports bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-cyan hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🧢</span>
+            <span class="bg-funkyCyan text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">COACHING</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Kids Tennis & Padel Coach</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Worked during summer teaching little kids fundamental racquet mechanics, footwork drills, sportsmanship, and patience.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyCyan font-mono">
+          <span>IMPACT: Youth Leadership</span>
+          <i class="fa-solid fa-heart"></i>
+        </div>
+      </div>
+
+      <!-- CARD 4: Ski Competition -->
+      <div class="card-item sports bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">⛷️</span>
+            <span class="bg-funkyYellow text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">COMPETITOR</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Alpine Ski Competitor</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Competed in official downhill ski races. High precision, balance, speed control, and cold-weather discipline.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyYellow font-mono">
+          <span>TRAIT: High Velocity</span>
+          <i class="fa-solid fa-snowflake"></i>
+        </div>
+      </div>
+
+      <!-- CARD 5: CapCut & TikTok Video Editing -->
+      <div class="card-item digital bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-pink hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">📱</span>
+            <span class="bg-funkyPink text-white text-xs font-bungee px-2.5 py-1 rounded-md border border-black">VIRAL MEDIA</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">TikTok & CapCut Montages</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Crafted high-energy tennis match montages using CapCut. Expert in beat-syncing, fast cuts, trending audio, and retention tricks.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyPink font-mono">
+          <span>TOOLS: CapCut, TikTok Clips</span>
+          <i class="fa-solid fa-scissors"></i>
+        </div>
+      </div>
+
+      <!-- CARD 6: YouTube Channel Experience -->
+      <div class="card-item digital bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-neon hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🎬</span>
+            <span class="bg-red-600 text-white text-xs font-bungee px-2.5 py-1 rounded-md border border-black">YOUTUBE CREATOR</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Long-form Video Editing</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Ran my own YouTube channel starting at age 12. Self-taught long-form storytelling, thumbnail awareness, audio levelling, and editing workflow.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyNeon font-mono">
+          <span>EXP: Since Age 12</span>
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+      </div>
+
+      <!-- CARD 7: Roblox Studio Map Creation -->
+      <div class="card-item digital bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-cyan hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🎮</span>
+            <span class="bg-funkyCyan text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">GAME DEV</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Roblox Studio Level Design</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Designed and built custom 3D environments & interactive maps inside Roblox Studio. Understands spatial layout, lighting, and player flow.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyCyan font-mono">
+          <span>SOFTWARE: Roblox Studio</span>
+          <i class="fa-solid fa-gamepad"></i>
+        </div>
+      </div>
+
+      <!-- CARD 8: Blender 3D Graphics -->
+      <div class="card-item digital bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🧊</span>
+            <span class="bg-orange-500 text-white text-xs font-bungee px-2.5 py-1 rounded-md border border-black">3D MODELING</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Blender 3D Character & Object Art</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            3D modeling experience creating stylized figures and objects in Blender. Solid understanding of mesh manipulation and renders.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-orange-400 font-mono">
+          <span>SOFTWARE: Blender 3D</span>
+          <i class="fa-solid fa-cube"></i>
+        </div>
+      </div>
+
+      <!-- CARD 9: Canva Presentations -->
+      <div class="card-item digital bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-pink hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">📊</span>
+            <span class="bg-funkyPink text-white text-xs font-bungee px-2.5 py-1 rounded-md border border-black">DESIGN</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Canva Graphic & Slide Design</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Created numerous engaging, visually polished presentations using Canva. Sharp eye for typography, layout hierarchy, and color palettes.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyPink font-mono">
+          <span>SKILL: Slide & Deck Master</span>
+          <i class="fa-solid fa-pen-nib"></i>
+        </div>
+      </div>
+
+      <!-- CARD 10: Pet Training (Cat & 2 Dogs) -->
+      <div class="card-item life bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-neon hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🐱🐕</span>
+            <span class="bg-funkyNeon text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">PET SPECIALIST</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Cat & Dog Whisperer</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Owner of 1 cat and 2 dogs! Skilled in teaching cats trick behaviors and socializing dogs to be friendly, calm, and well-behaved.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyNeon font-mono">
+          <span>TACTIC: Positive Reinforcement</span>
+          <i class="fa-solid fa-bone"></i>
+        </div>
+      </div>
+
+      <!-- CARD 11: Home Gardening -->
+      <div class="card-item life bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal-cyan hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🌱</span>
+            <span class="bg-funkyCyan text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">HANDS ON</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Gardening & Outdoor Maintenance</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Regular experience working in our family garden. Practical understanding of plant care, physical outdoor labor, and tool handling.
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyCyan font-mono">
+          <span>SKILL: Green Thumb</span>
+          <i class="fa-solid fa-leaf"></i>
+        </div>
+      </div>
+
+      <!-- CARD 12: Home Chemistry & Driving -->
+      <div class="card-item life bg-funkyCard border-3 border-black rounded-2xl p-6 shadow-brutal hover-wobble flex flex-col justify-between transition-all">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-4xl">🧪🚗</span>
+            <span class="bg-funkyYellow text-black text-xs font-bungee px-2.5 py-1 rounded-md border border-black">LIFE SKILLS</span>
+          </div>
+          <h4 class="font-bungee text-xl text-white mb-2">Driving & DIY Chemistry</h4>
+          <p class="text-gray-300 text-sm leading-relaxed mb-4">
+            Knows how to drive a car safely. Plus a curious mind for science—performed safe, hands-on home chemistry experiments!
+          </p>
+        </div>
+        <div class="border-t border-gray-700 pt-3 flex justify-between items-center text-xs text-funkyYellow font-mono">
+          <span>STATUS: Driver & Curiosity</span>
+          <i class="fa-solid fa-vial"></i>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERACTIVE PLAYGROUND: CAT TRAINER & TENNIS COURT -->
+  <section id="games" class="max-w-6xl mx-auto px-4 py-10 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- MINI GAME 1: Interactive Cat Trainer -->
+      <div class="bg-funkyCard border-4 border-black rounded-3xl p-6 shadow-brutal-pink flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="font-bungee text-2xl text-white">🐱 CAT TRAINING LAB</h4>
+            <span class="bg-funkyPink text-white font-bungee text-xs px-3 py-1 rounded-full border border-black">CLICKER GAME</span>
+          </div>
+          <p class="text-gray-300 text-sm mb-6">
+            Test my cat-training skills! Click the buttons to give treats and teach the cat new tricks!
+          </p>
+
+          <div class="bg-funkyDark border-2 border-black rounded-2xl p-6 text-center relative overflow-hidden">
+            <div id="cat-emoji" class="text-7xl mb-4 transition-transform duration-200 select-none">
+              🐱
+            </div>
+            <div id="cat-status" class="font-bungee text-lg text-funkyNeon mb-2">
+              Status: Sleepy Kitty
+            </div>
+            <p id="cat-dialogue" class="text-xs text-gray-400 italic mb-4">
+              "Meow... I am waiting for instructions."
+            </p>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-800 h-4 rounded-full border border-black overflow-hidden mb-4">
+              <div id="cat-progress" class="bg-funkyPink h-full w-1/5 transition-all duration-300"></div>
+            </div>
+
+            <div class="flex justify-center gap-3">
+              <button onclick="feedCat()" class="bg-funkyYellow text-black font-bungee text-xs px-4 py-2 rounded-xl border-2 border-black shadow-brutal hover:bg-yellow-400">
+                🍖 Give Treat
+              </button>
+              <button onclick="trainCat()" class="bg-funkyNeon text-black font-bungee text-xs px-4 py-2 rounded-xl border-2 border-black shadow-brutal hover:bg-lime-400">
+                🎾 Teach High-Five
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MINI GAME 2: Tennis Rally Bounce Canvas -->
+      <div class="bg-funkyCard border-4 border-black rounded-3xl p-6 shadow-brutal-neon flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="font-bungee text-2xl text-white">🎾 TENNIS RALLY SIM</h4>
+            <span class="bg-funkyNeon text-black font-bungee text-xs px-3 py-1 rounded-full border border-black">CANVAS GAME</span>
+          </div>
+          <p class="text-gray-300 text-sm mb-4">
+            Move your paddle with your mouse or finger to keep the rally alive!
+          </p>
+
+          <div class="relative w-full aspect-video bg-green-800 border-2 border-black rounded-2xl overflow-hidden shadow-inner flex flex-col items-center justify-center">
+            <canvas id="tennisCanvas" class="w-full h-full cursor-crosshair"></canvas>
+            
+            <div id="game-overlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-4 z-10">
+              <h5 class="font-bungee text-2xl text-funkyNeon mb-2">READY TO PLAY?</h5>
+              <p class="text-xs text-gray-300 mb-4 text-center">Move paddle left/right to hit the tennis ball</p>
+              <button onclick="startTennisGame()" class="bg-funkyPink text-white font-bungee text-sm px-6 py-3 rounded-xl border-2 border-black shadow-brutal hover:scale-105 transition-all">
+                START MATCH
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER / CONTACT -->
+  <footer class="bg-funkyDark border-t-4 border-black py-10 px-4 mt-12">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <h4 class="font-bungee text-xl text-white">LET'S CONNECT & COLLABORATE!</h4>
+        <p class="text-xs text-gray-400 mt-1">Open for Pro Tennis/Padel hitting sessions, Video Editing projects, or Coaching!</p>
+      </div>
+
+      <!-- Social / Contact Badges -->
+      <div class="flex flex-wrap gap-3">
+        <button onclick="copyContact(event)" class="bg-funkyCard border-2 border-black px-4 py-2 rounded-xl font-bungee text-xs text-funkyNeon shadow-brutal hover:bg-gray-800">
+          ✉️ COPY EMAIL
+        </button>
+        <button onclick="triggerConfetti()" class="bg-funkyPink text-white border-2 border-black px-4 py-2 rounded-xl font-bungee text-xs shadow-brutal hover:scale-105 transition-transform">
+          🎉 CELEBRATE
+        </button>
+      </div>
+    </div>
+    
+    <div class="text-center text-xs text-gray-600 font-mono mt-8">
+      Designed for Pro Athlete & Multi-Talented Creator | Built with Single-File HTML
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- 1. FILTERING SYSTEM ---
+    function filterCards(evt, category) {
+      const cards = document.querySelectorAll('.card-item');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      // Reset all buttons
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-funkyNeon', 'text-black');
+        btn.classList.add('bg-funkyCard', 'text-white');
+      });
+
+      // Highlight clicked button
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.remove('bg-funkyCard', 'text-white');
+        evt.currentTarget.classList.add('bg-funkyNeon', 'text-black');
+      }
+
+      // Show / Hide items
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function scrollToSection(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // --- 2. CAT TRAINER INTERACTIVE GAME ---
+    let catLevel = 20;
+    const catEmoji = document.getElementById('cat-emoji');
+    const catStatus = document.getElementById('cat-status');
+    const catDialogue = document.getElementById('cat-dialogue');
+    const catProgress = document.getElementById('cat-progress');
+
+    function updateCatUI() {
+      catProgress.style.width = catLevel + '%';
+      if (catLevel < 40) {
+        catEmoji.textContent = '🐱';
+        catStatus.textContent = 'Status: Sleepy Kitty';
+        catDialogue.textContent = '"Give me a treat to wake me up!"';
+      } else if (catLevel < 70) {
+        catEmoji.textContent = '😸';
+        catStatus.textContent = 'Status: Happy Cat';
+        catDialogue.textContent = '"Meow! Ready to learn a trick!"';
+      } else if (catLevel < 100) {
+        catEmoji.textContent = '😻';
+        catStatus.textContent = 'Status: Master Trick Cat';
+        catDialogue.textContent = '"Look! I just did a high-five!"';
+      } else {
+        catEmoji.textContent = '🦁';
+        catStatus.textContent = 'Status: PRO TENNIS CAT!';
+        catDialogue.textContent = '"I can now coach tennis too!"';
+      }
+    }
+
+    function feedCat() {
+      if (catLevel < 100) catLevel += 15;
+      if (catLevel > 100) catLevel = 100;
+      catEmoji.style.transform = 'scale(1.3) rotate(5deg)';
+      setTimeout(() => catEmoji.style.transform = 'scale(1) rotate(0deg)', 200);
+      updateCatUI();
+    }
+
+    function trainCat() {
+      if (catLevel < 100) catLevel += 20;
+      if (catLevel > 100) catLevel = 100;
+      catEmoji.style.transform = 'translateY(-20px) scale(1.2)';
+      setTimeout(() => catEmoji.style.transform = 'translateY(0px) scale(1)', 250);
+      updateCatUI();
+    }
+
+    // --- 3. CANVAS TENNIS MINI GAME ---
+    let canvas, ctx;
+    let ballX, ballY, ballDX, ballDY, ballRadius = 8;
+    let paddleX, paddleWidth = 80, paddleHeight = 12;
+    let score = 0;
+    let gameRunning = false;
+
+    function startTennisGame() {
+      document.getElementById('game-overlay').style.display = 'none';
+      canvas = document.getElementById('tennisCanvas');
+      ctx = canvas.getContext('2d');
+      
+      // Set resolution based on container
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      ballX = canvas.width / 2;
+      ballY = canvas.height / 3;
+      ballDX = 4 * (Math.random() > 0.5 ? 1 : -1);
+      ballDY = 4;
+      paddleX = (canvas.width - paddleWidth) / 2;
+      score = 0;
+      gameRunning = true;
+
+      // Mouse & Touch events
+      canvas.addEventListener('mousemove', movePaddle);
+      canvas.addEventListener('touchmove', movePaddleTouch, { passive: false });
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    function movePaddle(e) {
+      const rect = canvas.getBoundingClientRect();
+      paddleX = e.clientX - rect.left - paddleWidth / 2;
+    }
+
+    function movePaddleTouch(e) {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches.length > 0) {
+        paddleX = e.touches[0].clientX - rect.left - paddleWidth / 2;
+      }
+    }
+
+    function gameLoop() {
+      if (!gameRunning) return;
+
+      // Clear Canvas (Tennis Court Green)
+      ctx.fillStyle = '#1e5128';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Tennis Court Lines
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 20);
+      ctx.lineTo(canvas.width / 2, canvas.height - 20);
+      ctx.stroke();
+
+      // Move Ball
+      ballX += ballDX;
+      ballY += ballDY;
+
+      // Bounce Left/Right
+      if (ballX - ballRadius < 20 || ballX + ballRadius > canvas.width - 20) {
+        ballDX = -ballDX;
+      }
+
+      // Bounce Top
+      if (ballY - ballRadius < 20) {
+        ballDY = -ballDY;
+      }
+
+      // Bounce Paddle
+      if (
+        ballY + ballRadius >= canvas.height - 30 &&
+        ballX >= paddleX &&
+        ballX <= paddleX + paddleWidth
+      ) {
+        ballDY = -Math.abs(ballDY) * 1.05; // Acceleration
+        score++;
+      }
+
+      // Game Over Bottom
+      if (ballY + ballRadius > canvas.height) {
+        gameRunning = false;
+        const overlay = document.getElementById('game-overlay');
+        overlay.style.display = 'flex';
+        overlay.querySelector('h5').innerText = `RALLY SCORE: ${score}!`;
+        return;
+      }
+
+      // Draw Ball (Tennis Neon Yellow)
+      ctx.beginPath();
+      ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#ccff00';
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+      ctx.closePath();
+
+      // Draw Paddle
+      ctx.fillStyle = '#ff2a85';
+      ctx.fillRect(paddleX, canvas.height - 30, paddleWidth, paddleHeight);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(paddleX, canvas.height - 30, paddleWidth, paddleHeight);
+
+      // Draw Score
+      ctx.font = '16px Bungee';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText('RALLY: ' + score, 35, 45);
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    function copyContact(e) {
+      const text = "pro.athlete.creator@example.com";
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      
+      const btn = e.currentTarget;
+      const orig = btn.innerText;
+      btn.innerText = "COPIED TO CLIPBOARD! 📋";
+      setTimeout(() => btn.innerText = orig, 2000);
+    }
+
+    function triggerConfetti() {
+      document.body.style.transition = 'filter 0.2s';
+      document.body.style.filter = 'hue-rotate(90deg)';
+      setTimeout(() => {
+        document.body.style.filter = 'none';
+      }, 300);
+    }
+  </script>
 </body>
 </html>
